@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.database import close_db, init_db
+from app.database import close_db, init_db, run_migrations
 from app.middleware.rate_limit import rate_limit_middleware
 from app.routes import ingestion, latency, probes, targets, ws
 from app.services.streaming import close_redis, init_redis
@@ -16,6 +16,7 @@ log = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    await run_migrations()
     await init_redis()
     yield
     await close_db()
