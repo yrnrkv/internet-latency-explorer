@@ -16,6 +16,10 @@ _redis: aioredis.Redis | None = None
 _subscribers: list[Callable] = []
 
 
+def get_redis() -> aioredis.Redis | None:
+    return _redis
+
+
 async def init_redis() -> None:
     global _redis
     _redis = aioredis.from_url(settings.redis_url, decode_responses=True)

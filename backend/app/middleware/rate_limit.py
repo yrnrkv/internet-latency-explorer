@@ -8,13 +8,14 @@ from fastapi.responses import JSONResponse
 import redis.asyncio as aioredis
 
 from app.config import settings
-from app.services.streaming import _redis
+from app.services.streaming import get_redis
 
 log = logging.getLogger(__name__)
 
 
 async def rate_limit_middleware(request: Request, call_next):
-    if _redis is None:
+    redis = get_redis()
+    if redis is None:
         return await call_next(request)
 
     client_ip = request.client.host if request.client else "unknown"
@@ -23,7 +24,7 @@ async def rate_limit_middleware(request: Request, call_next):
     window = 60  # seconds
 
     try:
-        pipe = _redis.pipeline()
+        pipe = redis.pipeline()
         pipe.zremrangebyscore(key, 0, now - window)
         pipe.zadd(key, {str(now): now})
         pipe.zcard(key)

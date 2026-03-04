@@ -22,6 +22,7 @@ async def ws_latency(websocket: WebSocket):
             pass  # drop oldest messages under pressure
 
     unsub = await subscribe(_enqueue)
+    heartbeat_task: asyncio.Task | None = None
     try:
         heartbeat_task = asyncio.create_task(_heartbeat(websocket))
         while True:
@@ -32,7 +33,8 @@ async def ws_latency(websocket: WebSocket):
     except Exception as exc:
         log.warning("WS error: %s", exc)
     finally:
-        heartbeat_task.cancel()
+        if heartbeat_task is not None:
+            heartbeat_task.cancel()
         await unsub()
 
 

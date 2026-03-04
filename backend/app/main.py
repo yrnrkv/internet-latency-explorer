@@ -1,4 +1,5 @@
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,7 +12,17 @@ from app.services.streaming import close_redis, init_redis
 
 log = logging.getLogger(__name__)
 
-app = FastAPI(title="Internet Latency Explorer API", version="1.0.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()
+    await init_redis()
+    yield
+    await close_db()
+    await close_redis()
+
+
+app = FastAPI(title="Internet Latency Explorer API", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,18 +32,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.middleware("http")(rate_limit_middleware)
-
-
-@app.on_event("startup")
-async def startup() -> None:
-    await init_db()
-    await init_redis()
-
-
-@app.on_event("shutdown")
-async def shutdown() -> None:
-    await close_db()
-    await close_redis()
 
 
 @app.get("/health")
