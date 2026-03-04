@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { useLatencyStore } from '../stores/latencyStore'
 
+/** Hours of history represented by the slider at position 0. */
+const SLIDER_HISTORY_HOURS = 24
+
 export function TimeSlider() {
   const pos = useLatencyStore((s) => s.timeSliderPosition)
   const setPos = useLatencyStore((s) => s.setTimeSliderPosition)
@@ -26,7 +29,7 @@ export function TimeSlider() {
         className="w-48 accent-cyan-400"
       />
       <span className="text-xs font-mono text-slate-400">
-        {pos >= 1 ? 'LIVE' : `${Math.round((1 - pos) * 24)}h ago`}
+        {pos >= 1 ? 'LIVE' : `${Math.round((1 - pos) * SLIDER_HISTORY_HOURS)}h ago`}
       </span>
     </div>
   )

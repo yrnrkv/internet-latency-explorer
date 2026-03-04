@@ -1,6 +1,7 @@
 type MessageHandler = (data: unknown) => void
 
 const WS_BASE = import.meta.env.VITE_WS_URL ?? `ws://${window.location.host}`
+const RECONNECT_DELAY_MS = 3000
 
 export class LatencyWebSocket {
   private ws: WebSocket | null = null
@@ -23,7 +24,7 @@ export class LatencyWebSocket {
 
     this.ws.onclose = () => {
       if (!this.closed) {
-        this.reconnectTimer = setTimeout(() => this.connect(), 3000)
+        this.reconnectTimer = setTimeout(() => this.connect(), RECONNECT_DELAY_MS)
       }
     }
   }
