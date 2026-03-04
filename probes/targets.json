@@ -1,0 +1,14 @@
+{
+  "targets": [
+    {"name": "Google DNS", "host": "8.8.8.8", "port": 443, "city": "Mountain View", "lat": 37.386, "lng": -122.084, "type": "service"},
+    {"name": "Cloudflare", "host": "1.1.1.1", "port": 443, "city": "San Francisco", "lat": 37.774, "lng": -122.419, "type": "service"},
+    {"name": "GitHub API", "host": "api.github.com", "port": 443, "city": "Seattle", "lat": 47.606, "lng": -122.332, "type": "service"},
+    {"name": "OpenAI API", "host": "api.openai.com", "port": 443, "city": "San Francisco", "lat": 37.774, "lng": -122.419, "type": "service"},
+    {"name": "AWS us-east-1", "host": "ec2.us-east-1.amazonaws.com", "port": 443, "city": "Ashburn", "lat": 39.046, "lng": -77.487, "type": "cloud"},
+    {"name": "AWS eu-west-1", "host": "ec2.eu-west-1.amazonaws.com", "port": 443, "city": "Dublin", "lat": 53.349, "lng": -6.260, "type": "cloud"},
+    {"name": "AWS ap-northeast-1", "host": "ec2.ap-northeast-1.amazonaws.com", "port": 443, "city": "Tokyo", "lat": 35.682, "lng": 139.762, "type": "cloud"},
+    {"name": "Frankfurt DE-CIX", "host": "de-cix.net", "port": 443, "city": "Frankfurt", "lat": 50.110, "lng": 8.682, "type": "exchange"},
+    {"name": "Sydney", "host": "www.sydney.edu.au", "port": 443, "city": "Sydney", "lat": -33.868, "lng": 151.209, "type": "city"},
+    {"name": "São Paulo", "host": "www.usp.br", "port": 443, "city": "São Paulo", "lat": -23.550, "lng": -46.634, "type": "city"}
+  ]
+}
