@@ -11,6 +11,7 @@ interface LatencyStore {
   history: LatencyTimeSeries[]
   anomalies: AnomalyEvent[]
   isConnected: boolean
+  connectionFailed: boolean
   timeSliderPosition: number
 
   updateReading: (sample: LatencySample) => void
@@ -19,6 +20,7 @@ interface LatencyStore {
   setTimeRange: (range: TimeRange) => void
   setHistory: (history: LatencyTimeSeries[]) => void
   setConnected: (v: boolean) => void
+  setConnectionFailed: (v: boolean) => void
   setTimeSliderPosition: (v: number) => void
 }
 
@@ -30,6 +32,7 @@ export const useLatencyStore = create<LatencyStore>((set) => ({
   history: [],
   anomalies: [],
   isConnected: false,
+  connectionFailed: false,
   timeSliderPosition: 1,
 
   updateReading: (sample) =>
@@ -45,5 +48,6 @@ export const useLatencyStore = create<LatencyStore>((set) => ({
   setTimeRange: (selectedTimeRange) => set({ selectedTimeRange }),
   setHistory: (history) => set({ history }),
   setConnected: (isConnected) => set({ isConnected }),
+  setConnectionFailed: (connectionFailed) => set({ connectionFailed }),
   setTimeSliderPosition: (timeSliderPosition) => set({ timeSliderPosition }),
 }))

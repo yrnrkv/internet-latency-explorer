@@ -73,35 +73,49 @@ export function WorldMap() {
     }),
   ]
 
+  const hasData = arcs.length > 0 || probes.length > 0
+
   return (
-    <DeckGL
-      initialViewState={INITIAL_VIEW}
-      controller={true}
-      layers={layers}
-      getTooltip={(info) => {
-        if (!info.object) return null
-        const s = (info.object as ArcDatum).sample
-        return {
-          html: `
-            <div style="font-family:monospace;font-size:12px;line-height:1.6">
-              <b>${s.probe_city} → ${s.target_city}</b><br/>
-              Latency: ${s.latency_ms.toFixed(1)} ms<br/>
-              Jitter: ${s.jitter_ms.toFixed(1)} ms<br/>
-              Packet Loss: ${(s.packet_loss * 100).toFixed(0)}%<br/>
-              Target: ${s.target_name}
-            </div>
-          `,
-          style: {
-            backgroundColor: '#0f172a',
-            border: '1px solid #1e293b',
-            borderRadius: '8px',
-            padding: '8px 12px',
-            color: '#e2e8f0',
-          },
-        }
-      }}
-    >
-      <Map mapStyle={MAP_STYLE} />
-    </DeckGL>
+    <div className="relative w-full h-full">
+      <DeckGL
+        initialViewState={INITIAL_VIEW}
+        controller={true}
+        layers={layers}
+        getTooltip={(info) => {
+          if (!info.object) return null
+          const s = (info.object as ArcDatum).sample
+          return {
+            html: `
+              <div style="font-family:monospace;font-size:12px;line-height:1.6">
+                <b>${s.probe_city} → ${s.target_city}</b><br/>
+                Latency: ${s.latency_ms.toFixed(1)} ms<br/>
+                Jitter: ${s.jitter_ms.toFixed(1)} ms<br/>
+                Packet Loss: ${(s.packet_loss * 100).toFixed(0)}%<br/>
+                Target: ${s.target_name}
+              </div>
+            `,
+            style: {
+              backgroundColor: '#0f172a',
+              border: '1px solid #1e293b',
+              borderRadius: '8px',
+              padding: '8px 12px',
+              color: '#e2e8f0',
+            },
+          }
+        }}
+      >
+        <Map mapStyle={MAP_STYLE} />
+      </DeckGL>
+      {!hasData && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="bg-slate-900/80 border border-white/10 rounded-lg px-6 py-4 text-center">
+            <p className="text-slate-300 font-mono text-sm">No data available</p>
+            <p className="text-slate-500 font-mono text-xs mt-1">
+              Connect a backend to see latency data
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }

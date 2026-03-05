@@ -8,6 +8,30 @@ import { WorldMap } from './WorldMap'
 
 export function Layout() {
   const selectedRoute = useLatencyStore((s) => s.selectedRoute)
+  const probes = useLatencyStore((s) => s.probes)
+  const liveReadings = useLatencyStore((s) => s.liveReadings)
+  const isConnected = useLatencyStore((s) => s.isConnected)
+  const connectionFailed = useLatencyStore((s) => s.connectionFailed)
+
+  const hasData = probes.length > 0 || liveReadings.size > 0
+
+  const statusBadge = isConnected ? (
+    <span className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 rounded text-cyan-400">
+      LIVE
+    </span>
+  ) : connectionFailed ? (
+    <span className="px-2 py-0.5 bg-red-900/40 border border-red-700/50 rounded text-red-400">
+      NO BACKEND
+    </span>
+  ) : hasData ? (
+    <span className="px-2 py-0.5 bg-slate-700/50 border border-slate-600/50 rounded text-slate-400">
+      DISCONNECTED
+    </span>
+  ) : (
+    <span className="px-2 py-0.5 bg-slate-700/50 border border-slate-600/50 rounded text-slate-400">
+      CONNECTING...
+    </span>
+  )
 
   return (
     <div className="h-screen w-screen bg-slate-950 text-slate-100 flex flex-col overflow-hidden">
@@ -20,9 +44,7 @@ export function Layout() {
           </span>
         </div>
         <div className="ml-auto flex items-center gap-2 text-xs text-slate-400 font-mono">
-          <span className="px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/30 rounded text-cyan-400">
-            LIVE
-          </span>
+          {statusBadge}
         </div>
       </header>
 
