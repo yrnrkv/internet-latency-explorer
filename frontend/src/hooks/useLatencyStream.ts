@@ -6,6 +6,7 @@ import type { LatencySample } from '../types'
 export function useLatencyStream() {
   const updateReading = useLatencyStore((s) => s.updateReading)
   const setConnected = useLatencyStore((s) => s.setConnected)
+  const setConnectionFailed = useLatencyStore((s) => s.setConnectionFailed)
 
   useEffect(() => {
     wsClient.connect()
@@ -16,11 +17,12 @@ export function useLatencyStream() {
 
     const interval = setInterval(() => {
       setConnected(wsClient.isConnected)
+      setConnectionFailed(wsClient.maxRetriesReached)
     }, 1000)
 
     return () => {
       unsubscribe()
       clearInterval(interval)
     }
-  }, [updateReading, setConnected])
+  }, [updateReading, setConnected, setConnectionFailed])
 }
